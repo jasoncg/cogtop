@@ -1,23 +1,19 @@
 use sysinfo::{System, SystemExt, DiskExt};
-use std::convert::TryInto;
-use std::time::Instant;
 use tui::style::{Color, Modifier, Style};
-use tui::widgets::{Axis, Block, Borders, Chart, Dataset, Gauge};
-use tui::{symbols, Frame};
-use tui::text::{Span, Spans, Text};
+use tui::widgets::{Block, Borders, Gauge};
+use tui::{Frame};
 use tui::layout::{Constraint, Direction, Layout, Rect};
-use std::collections::HashSet;
 
 pub struct StorageTracker {
-    buffer: Vec<(f64, f64)>,
-    buffer_size: usize,
+    //buffer: Vec<(f64, f64)>,
+    //buffer_size: usize,
     sys: System
 }
 impl StorageTracker {
-    pub fn new(size:usize) -> Self {
+    pub fn new() -> Self {
         Self {
-            buffer: Vec::new(),
-            buffer_size: size,
+            //buffer: Vec::new(),
+            //buffer_size: size,
             sys: System::new_all()
         }
     }

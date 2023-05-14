@@ -4,7 +4,7 @@ use tui::layout::Rect;
 use tui::style::{Color, Modifier, Style};
 use tui::widgets::{Axis, Block, Borders, Chart, Dataset};
 use tui::{symbols, Frame};
-use tui::text::{Span, Spans, Text};
+use tui::text::{Span, Spans};
 
 
 /**

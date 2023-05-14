@@ -2,18 +2,17 @@ mod trackers;
 use std::io;
 use std::time::{Duration, Instant};
 use crossterm::{
-    event::{poll, read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
-    execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    event::{poll, read, Event, KeyCode},
+    terminal::{disable_raw_mode, enable_raw_mode},
 };
 use tui::{backend::CrosstermBackend, Terminal};
-use tui::layout::{Constraint, Direction, Layout, Rect};
-use tui::style::{Color, Modifier, Style};
-use tui::widgets::{Block, Borders, Paragraph, Widget, Wrap, Gauge};
+use tui::layout::{Constraint, Direction, Layout};
+use tui::style::{Modifier, Style};
+use tui::widgets::{Block, Borders, Paragraph, Wrap};
 use tui::text::{Span, Spans};
 use chrono::Local;
 use clap::Parser;
-use sysinfo::{System, SystemExt, CpuExt, DiskExt};
+use sysinfo::{System, SystemExt, CpuExt};
 
 use trackers::cpu_tracker::CPUTracker;
 use trackers::mem_tracker::MemTracker;
@@ -55,15 +54,12 @@ fn main() -> Result<(), io::Error> {
 
     let _tclearresult = terminal.clear();
     
-    // Initialize buffers for memory and CPU usage over time
-    let mut mem_buffer: Vec<(f64, f64)> = Vec::new();
-    let mut cpu_buffer: Vec<(f64, f64)> = Vec::new();
-    let mut start_time = Instant::now();
+    let start_time = Instant::now();
 
     // Create CPU tracker
     let mut cpu_tracker = CPUTracker::new(200);
     let mut ram_tracker = MemTracker::new(200);
-    let mut storage_tracker = StorageTracker::new(200);
+    let mut storage_tracker = StorageTracker::new();
 
     loop {
         // Check for keyboard input
