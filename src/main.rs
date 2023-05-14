@@ -2,6 +2,11 @@ use sysinfo::{DiskExt, System, SystemExt, CpuExt};
 use std::io;
 use std::time::{Duration, Instant};
 use std::thread;
+use crossterm::{
+    event::{poll, read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
+    execute,
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+};
 use tui::{backend::CrosstermBackend, Terminal};
 use tui::layout::{Constraint, Direction, Layout, Rect};
 use tui::style::{Color, Modifier, Style};
@@ -178,7 +183,7 @@ fn main() -> Result<(), io::Error> {
     let _cli = Cli::parse();
 
     let mut sys = System::new_all();
-
+    enable_raw_mode()?;
     // terminal setup
     let stdout = io::stdout();
     let backend = CrosstermBackend::new(stdout);
@@ -196,6 +201,14 @@ fn main() -> Result<(), io::Error> {
     let mut ram_tracker = MemTracker::new(60);
 
     loop {
+        // Check for keyboard input
+        if poll(Duration::from_millis(1000))? {
+            let event = read()?;
+            if event == Event::Key(KeyCode::Char('q').into()) {
+                break;
+            }   
+            
+        }
         // refresh system info
         sys.refresh_all();
 
@@ -297,7 +310,8 @@ fn main() -> Result<(), io::Error> {
         })?;
 
         // sleep for a bit to prevent high CPU usage
-        thread::sleep(Duration::from_millis(1000));
+        //thread::sleep(Duration::from_millis(1000));
     }
+    return Ok(());
 }
 
