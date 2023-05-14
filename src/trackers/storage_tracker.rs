@@ -62,13 +62,16 @@ pub fn gauges(&mut self, frame: &mut Frame<impl tui::backend::Backend>, area: Re
         // Find the first occurrence of the disk with the unique name
         let disk = disks.iter().find(|d| d.name().to_str().unwrap_or_default() == *disk_name);
         if let Some(disk) = disk {
-            let disk_usage = disk.total_space() - disk.available_space();
-            let total_space = disk.total_space();
+            let disk_usage = disk.total_space() - disk.available_space();   // bytes
+            let total_space = disk.total_space();                           // bytes
             let disk_usage_ratio = disk_usage as f64 / total_space as f64 * 100.0;
+            //let title = format!("{} {:.2} / {:.2}GB", disk_name, disk_usage as f64 / 1_000_000_000.0, total_space as f64 / 1_000_000_000.0);
+            let label = format!("{:.2}% ({:.2} / {:.2}GB)", disk_usage_ratio, disk_usage as f64 / 1_000_000_000.0, total_space as f64 / 1_000_000_000.0);
 
             let disk_gauge = Gauge::default()
                 .block(Block::default().title(disk_name.to_string()).borders(Borders::ALL))
-                .gauge_style(Style::default().fg(Color::White))
+                .gauge_style(Style::default().fg(Color::Blue).bg(Color::Black).add_modifier(Modifier::BOLD))
+                .label(label)
                 .percent(disk_usage_ratio as u16);
 
             frame.render_widget(disk_gauge, disk_layout[i]);

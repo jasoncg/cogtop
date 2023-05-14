@@ -127,6 +127,15 @@ fn main() -> Result<(), io::Error> {
                     Span::raw(format!("{:.2} GB / {:.2} GB", sys.used_memory() as f64 / 1024.0 / 1024.0 / 1024.0, sys.total_memory() as f64 / 1024.0 / 1024.0 / 1024.0)),
                 ]),
                 Spans::from(vec![
+                    Span::styled("Swap: ", Style::default().add_modifier(Modifier::BOLD)),
+                    Span::raw(format!("{:.2} GB / {:.2} GB", sys.used_swap() as f64 / 1024.0 / 1024.0 / 1024.0, sys.total_swap() as f64 / 1024.0 / 1024.0 / 1024.0)),
+                ]),
+                // Load average info
+                Spans::from(vec![
+                    Span::styled("Load Average: ", Style::default().add_modifier(Modifier::BOLD)),
+                    Span::raw(format!("{:.2} {:.2} {:.2}", sys.load_average().one, sys.load_average().five, sys.load_average().fifteen)),
+                ]),
+                Spans::from(vec![
                     Span::styled("Date/Time: ", Style::default().add_modifier(Modifier::BOLD)),
                     Span::raw(Local::now().format("%m/%d/%Y %H:%M:%S").to_string()),
                 ]),
