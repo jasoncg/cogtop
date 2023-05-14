@@ -1,0 +1,28 @@
+# Rust/Cargo
+/target/
+**/*.rs.bk
+
+# Build artifacts
+Cargo.lock
+*.rlib
+*.rmeta
+
+# Ignore compiled executables
+**/target/release/
+**/target/debug/
+
+# Ignore .env file if you're using dotenv
+.env
+
+# Ignore any generated documentation
+**/target/doc/
+
+# Ignore editor-specific files
+.idea/
+*.sublime-*
+*.swp
+*.swo
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
